@@ -2,18 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Card } from "react-bootstrap";
 
 const SingleBook = (props) => {
-  const [selectedAsin, setSelectedAsin] = useState(props.selectedAsin);
+  const [selected, setSelected] = useState(false);
 
   useEffect(() => {
-    setSelectedAsin(props.selectedAsin);
-  });
+    if (props.selectedBook === props.book.asin) {
+      setSelected(true);
+    } else {
+      setSelected(false);
+    }
+  }, [props.selectedBook, props.book.asin]);
 
   return (
     <>
       <Card
-        onClick={() => props.changeSelectedAsin(props.book.asin)}
+        onClick={() => props.changeSelectedBook(props.book.asin)}
         style={{
-          border: selectedAsin === props.book.asin ? "3px solid red" : "none",
+          border: selected ? "3px solid red" : "none",
         }}
       >
         <Card.Img variant="top" src={props.book.img} />
