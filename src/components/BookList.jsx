@@ -3,18 +3,6 @@ import { Row, Col, Form } from "react-bootstrap";
 import SingleBook from "./SingleBook";
 import CommentArea from "./CommentArea";
 
-/*class BookList extends Component {
-  state = {
-    searchQuery: "",
-    selectedAsin: null,
-  };
-
-  bookAsinSelector = (asin) => {
-    this.setState({
-      selectedAsin: asin,
-    });
-  };*/
-
 const BookList = (props) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedAsin, setSelectedAsin] = useState(null);
