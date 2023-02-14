@@ -1,9 +1,9 @@
-import { Component } from "react";
-import SingleBook from "./SingleBooks";
-import { Col, Form, Row } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Row, Col, Form } from "react-bootstrap";
+import SingleBook from "./SingleBook";
 import CommentArea from "./CommentArea";
 
-class BookList extends Component {
+/*class BookList extends Component {
   state = {
     searchQuery: "",
     selectedAsin: null,
@@ -13,52 +13,59 @@ class BookList extends Component {
     this.setState({
       selectedAsin: asin,
     });
+  };*/
+
+const BookList = (props) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedAsin, setSelectedAsin] = useState(null);
+
+  useEffect(() => {
+    console.log("Hey I'm rendering");
+  });
+
+  const bookAsinSelector = (asin) => {
+    setSelectedAsin(asin);
   };
 
-  render() {
-    return (
-      <>
-        <Row>
-          <Col md={8}>
-            <Row>
-              <Col>
-                <Form.Group>
-                  <Form.Label>Search a book</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Search here"
-                    value={this.state.searchQuery}
-                    onChange={(e) =>
-                      this.setState({ searchQuery: e.target.value })
-                    }
+  return (
+    <>
+      <Row>
+        <Col md={8}>
+          <Row>
+            <Col>
+              <Form.Group>
+                <Form.Label>Search a book</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Search here"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row>
+            {props.books
+              .filter((b) =>
+                b.title.toLowerCase().includes(searchQuery.toLowerCase())
+              )
+              .map((b) => (
+                <Col xs={12} md={4} key={b.asin}>
+                  <SingleBook
+                    book={b}
+                    selectedAsin={selectedAsin}
+                    changeSelectedAsin={bookAsinSelector}
                   />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              {this.props.books
-                .filter((b) =>
-                  b.title.toLowerCase().includes(this.state.searchQuery)
-                )
-                .map((b) => (
-                  <Col xs={12} md={4} key={b.asin}>
-                    <SingleBook
-                      book={b}
-                      selectedAsin={this.state.selectedAsin}
-                      changeSelectedAsin={this.changeSelectedAsin}
-                    />
-                  </Col>
-                ))}
-            </Row>
-          </Col>
-          <Col md={4}>
-            <CommentArea asin={this.state.selectedAsin} /> :
-            {<p>non ci sono commenti</p>}
-          </Col>
-        </Row>
-      </>
-    );
-  }
-}
+                </Col>
+              ))}
+          </Row>
+        </Col>
+        <Col md={4}>
+          <CommentArea asin={selectedAsin} /> :{<p>non ci sono commenti</p>}
+        </Col>
+      </Row>
+    </>
+  );
+};
 
 export default BookList;
